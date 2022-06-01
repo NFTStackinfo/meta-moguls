@@ -1,9 +1,16 @@
 const addressList = [
-  "0x9dbf14c79847d1566419dcddd5ad35daf0382e05",
   "0xbd869d89ba193d1590049ac3eff2ffb17c4c9b5b",
   "0xb831f40de050b094cffb5bc17e9746cada70fa28",
   "0xe9bbb96bb34d842f13eb56c72dd82eddc7d7ca6c",
   "0xc5b751e3bfc33c86eb7f365fffe8afa039ad89e9",
-]
+  "0x9dbf14c79847d1566419dcddd5ad35daf0382e05",
+  "0x8fb2928e6e378a31444291023de3cc5a5794db28",
+  "0x0449688907e9859bcab06c2775dc7eef834575bd",
+  "0x8606409651799eafff45ee07ce7f26b75c8f8348",
+  "0x96ad09a3695df3afad5e799fc31a283b81990ace",
+  "0x0e086bfb73dd4f52a42753c0848f426fa079a76e",
+  "0xe4a5510402e17ad8bed1d5f891f9c4d8f104e11c",
+  "0xc5c0deaa2211de685df78098fce8acd7e63b7735"
+];
 
-export default addressList
+export default addressList;

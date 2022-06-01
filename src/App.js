@@ -54,8 +54,10 @@ const App = () => {
 
   useEffect(async () => {
     if (blockchain.account !== "" && blockchain.smartContract !== null) {
+
       dispatch(fetchData(blockchain.account))
       if (blockchain.account) {
+
         const isMintActive = await blockchain.smartContract.methods
         .isMintActive()
         .call()
@@ -98,6 +100,10 @@ const App = () => {
           setMaxTotalSupply(+raffleBreakPoint3)
         }
 
+        if (totalSupply > maxTotalSupply) {
+          return setFallback("No more NFTs are left to mint for this stage.")
+        }
+
         const getTotalSupply = await blockchain?.smartContract?.methods
           .getTotalSupply()
           .call()
@@ -108,9 +114,6 @@ const App = () => {
 
         setTotalSupply(Number(getTotalSupply))
 
-        if (totalSupply > maxTotalSupply) {
-          return setFallback("No more NFTs are left to mint for this stage.")
-        }
         const root = await blockchain?.smartContract?.methods.getRoot().call()
         let tree
 
@@ -159,7 +162,7 @@ const App = () => {
     }
     if (blockchain.errorMsg === metamaskError && !(isIOS || isAndroid)) {
       window.location.replace(
-        "https://metamask.app.link/dapp/racing-social-club.netlify.com/"
+        "https://metamask.app.link/dapp/meta-moguls.netlify.app/"
       )
     }
   }, [blockchain.errorMsg])
@@ -171,7 +174,7 @@ const App = () => {
         blockchain.errorMsg === metamaskError
       ) {
         window.location.replace(
-          "https://metamask.app.link/dapp/racing-social-club.netlify.com/"
+          "https://metamask.app.link/dapp/meta-moguls.netlify.app/"
         )
       }
     }
@@ -351,10 +354,18 @@ const App = () => {
                 </div>
                 <div className="button-wrapper">
                   <button
-                    className="button"
+                    className={`button ${loading ? 'pointer-none' : ''}`}
                     onClick={e => handleMint(e, mintCount)}
                   >
                     mint now
+                    {loading &&
+                        <div className="lds-ring">
+                          <div/>
+                          <div/>
+                          <div/>
+                          <div/>
+                        </div>
+                    }
                   </button>
                 </div>
                 <p className="small-text">
@@ -394,8 +405,19 @@ const App = () => {
                   <div>1 NFT = - ETH</div>
                 </div>
                 <div className="button-wrapper">
-                  <button className="button" onClick={handleConnectWallet}>
+                  <button
+                      className={`button ${blockchain.loading ? 'pointer-none' : ''}`}
+                      onClick={handleConnectWallet}
+                  >
                     connect
+                    {blockchain.loading &&
+                        <div className="lds-ring">
+                          <div/>
+                          <div/>
+                          <div/>
+                          <div/>
+                        </div>
+                    }
                   </button>
                   {fallback && <p className="warn-text">{fallback}</p>}
                 </div>

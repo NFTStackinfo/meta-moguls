@@ -1,7 +1,7 @@
 // constants
 import Web3 from "web3"
 import axios from "axios"
-import SmartContract from "../../contracts/NFTStack721ARaffle.json"
+import SmartContract from "../../contracts/M3taMoguls.json"
 // log
 import { fetchData } from "../data/dataActions"
 
@@ -69,7 +69,7 @@ export const connect = (register = true) => {
         })
         //const NetworkData = await SmartContract.networks[networkId];
         if (networkId === "4" || networkId === 4) {
-          const address = "0xa3d17801c6279a613ed57a1a79a65a1b00dc9c20"
+          const address = "0xfEda95939f9bf5D720730D6ca771dB0c3DcaFf0C"
           const account = accounts[0]
 
           const SmartContractObj = new web3.eth.Contract(

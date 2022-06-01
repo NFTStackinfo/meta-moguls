@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "./ERC721A.sol";
 
-contract NFTStack721ARaffle is ERC721A, Ownable {
+contract M3taMoguls is ERC721A, Ownable {
   using MerkleProof for bytes32[];
 
   bytes32 public root;
@@ -55,7 +55,7 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
     string memory baseURI,
     uint256 maxBatchSize_,
     uint256 collectionSize_
-   ) ERC721A("NFTStackTest", "NFTStackTest", maxBatchSize_, collectionSize_) {
+   ) ERC721A("M3TA MOGULS", "MM", maxBatchSize_, collectionSize_) {
     setBaseURI(baseURI);
     maxPerAddressDuringMint = maxBatchSize_;
   }

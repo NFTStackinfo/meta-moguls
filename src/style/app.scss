@@ -142,6 +142,10 @@ body {
             cursor: pointer;
 
 
+            &[disabled] {
+                opacity: .4;
+                pointer-events: none;
+            }
 
         }
     }
@@ -159,6 +163,7 @@ body {
         font-size: 18px;
         text-transform: uppercase;
         margin-bottom: 10px;
+        letter-spacing: 1px;
 
         >div {
             &:first-child {
@@ -181,6 +186,17 @@ body {
 
         button {
             cursor: pointer;
+
+            &[disabled] {
+                opacity: 0.5;
+                cursor: auto;
+                pointer-events: none;
+            }
         }
     }
+
+    .pointer-none {
+        pointer-events: none;
+    }
 }
+

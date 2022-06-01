@@ -3,7 +3,7 @@ const initialState = {
   name: "",
   error: false,
   errorMsg: "",
-};
+}
 
 const dataReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -11,23 +11,23 @@ const dataReducer = (state = initialState, action) => {
       return {
         ...initialState,
         loading: true,
-      };
+      }
     case "CHECK_DATA_SUCCESS":
       return {
         ...initialState,
         loading: false,
         name: action.payload.name,
-      };
+      }
     case "CHECK_DATA_FAILED":
       return {
         ...initialState,
         loading: false,
         error: true,
         errorMsg: action.payload,
-      };
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default dataReducer;
+export default dataReducer

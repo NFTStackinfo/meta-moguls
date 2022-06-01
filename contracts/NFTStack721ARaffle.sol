@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Made by: NFT Stack
 //          https://nftstack.info
+//
 
 pragma solidity ^0.8.1;
 
@@ -12,32 +13,40 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
   using MerkleProof for bytes32[];
 
   bytes32 public root;
+  uint256 public mintPrice = 0.3 ether;
+  uint256 public raffleMintPrice = 0.15 ether;
+  uint256 public raffleBreakPoint1 = 5;
+  uint256 public raffleBreakPoint2 = 10;
+  uint256 public raffleBreakPoint3 = 15;
 
-  uint256 public mintPrice = 0.2 ether;
-  uint256 public preSaleMintPrice = 0.2 ether;
-  uint256 public raffleMintPrice = 0.2 ether;
   uint256 private reserveAtATime = 50;
   uint256 private reservedCount = 0;
-  uint256 private maxReserveCount = 200;
+  uint256 private maxReserveCount = 100;
 
   string _baseTokenURI;
 
-  bool public isRaffleActive = false;
+  bool public isRaffleActive1 = false;
+  bool public isRaffleActive2 = false;
+  bool public isRaffleActive3 = false;
   bool public isMintActive = false;
-  bool public isPreSaleMintActive = false;
   bool public isClosedMintForever = false;
-  bool public isSellOpen = false;
 
-  uint256 public maximumMintSupply = 10000;
-  uint256 public maximumAllowedTokensPerPurchase = 10;
-  uint256 public maximumAllowedTokensPerWallet = 10;
-  uint256 public allowListMaxMint = 10;
+  uint256 public maximumMintSupply = 8888;
+  uint256 public maximumAllowedTokensPerPurchase = 5;
+  uint256 public maximumAllowedTokensPerWallet = 5;
+  uint256 public raffleMaxMint1 = 2;
+  uint256 public raffleMaxMint2 = 3;
+  uint256 public raffleMaxMint3 = 4;
+
   uint256 public immutable maxPerAddressDuringMint;
 
-  address private OtherAddress = 0x9DbF14C79847D1566419dCddd5ad35DAf0382E05;
+  address private OtherAddress1 = 0x9DbF14C79847D1566419dCddd5ad35DAf0382E05;
+  address private OtherAddress2 = 0x9DbF14C79847D1566419dCddd5ad35DAf0382E05;
 
   mapping(address => bool) private _allowList;
-  mapping(address => uint256) private _allowListClaimed;
+  mapping(address => uint256) private _allowListClaimed1;
+  mapping(address => uint256) private _allowListClaimed2;
+  mapping(address => uint256) private _allowListClaimed3;
 
   event AssetMinted(uint256 tokenId, address sender);
   event SaleActivation(bool isMintActive);
@@ -46,7 +55,7 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
     string memory baseURI,
     uint256 maxBatchSize_,
     uint256 collectionSize_
-  ) ERC721A("NFT Stack Test", "NFTS", maxBatchSize_, collectionSize_) {
+   ) ERC721A("NFTStackTest", "NFTStackTest", maxBatchSize_, collectionSize_) {
     setBaseURI(baseURI);
     maxPerAddressDuringMint = maxBatchSize_;
   }
@@ -83,28 +92,40 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
     maximumMintSupply = maxMintSupply;
   }
 
-  function setRaffleActive(bool _isRaffleActive) public onlyAuthorized {
-    isRaffleActive = _isRaffleActive;
+  function setRaffleBreakPoint1(uint256 point) external  onlyAuthorized {
+    raffleBreakPoint1 = point;
   }
 
-  function setIsPreSaleMintActive(bool _isPreSaleMintActive) external onlyAuthorized {
-    isPreSaleMintActive = _isPreSaleMintActive;
+  function setRaffleBreakPoint2(uint256 point) external  onlyAuthorized {
+    raffleBreakPoint2 = point;
   }
 
-  function setIsSellOpen(bool _isSellOpen) external onlyAuthorized {
-    isSellOpen = _isSellOpen;
+  function setRaffleBreakPoint3(uint256 point) external  onlyAuthorized {
+    raffleBreakPoint3 = point;
   }
 
-  function setAllowListMaxMint(uint256 maxMint) external  onlyAuthorized {
-    allowListMaxMint = maxMint;
+  function setRaffleActive1(bool _isRaffleActive) public onlyAuthorized {
+    isRaffleActive1 = _isRaffleActive;
   }
 
-  function addToAllowList(address[] calldata addresses) external onlyAuthorized {
-    for (uint256 i = 0; i < addresses.length; i++) {
-      require(addresses[i] != address(0), "Can't add a null address");
-      _allowList[addresses[i]] = true;
-      _allowListClaimed[addresses[i]] > 0 ? _allowListClaimed[addresses[i]] : 0;
-    }
+  function setRaffleActive2(bool _isRaffleActive) public onlyAuthorized {
+    isRaffleActive2 = _isRaffleActive;
+  }
+
+  function setRaffleActive3(bool _isRaffleActive) public onlyAuthorized {
+    isRaffleActive3 = _isRaffleActive;
+  }
+
+  function setRaffleMaxMint1(uint256 maxMint) external  onlyAuthorized {
+    raffleMaxMint1 = maxMint;
+  }
+
+  function setRaffleMaxMint2(uint256 maxMint) external  onlyAuthorized {
+    raffleMaxMint2 = maxMint;
+  }
+
+  function setRaffleMaxMint3(uint256 maxMint) external  onlyAuthorized {
+    raffleMaxMint3 = maxMint;
   }
 
   function checkIfOnAllowList(address addr) external view returns (bool) {
@@ -118,11 +139,6 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
     }
   }
 
-  function allowListClaimedBy(address owner) external view returns (uint256){
-    require(owner != address(0), 'Zero address not on Allow List');
-    return _allowListClaimed[owner];
-  }
-
   function setReserveAtATime(uint256 val) public onlyAuthorized {
     reserveAtATime = val;
   }
@@ -133,10 +149,6 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
 
   function setMintPrice(uint256 _price) public onlyAuthorized {
     mintPrice = _price;
-  }
-
-  function setPreSaleMintPrice(uint256 _price) public onlyAuthorized {
-    preSaleMintPrice = _price;
   }
 
   function setRaffleMintPrice(uint256 _price) public onlyAuthorized {
@@ -155,10 +167,6 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
     return mintPrice;
   }
 
-  function getPreSaleMintPrice() external view returns (uint256) {
-    return preSaleMintPrice;
-  }
-
   function getRaffleMintPrice() external view returns (uint256) {
     return raffleMintPrice;
   }
@@ -173,16 +181,6 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
 
   function setRoot(bytes32 _root) public onlyAuthorized {
     root = _root;
-  }
-
-  function setApprovalForAll(address operator, bool approved) public virtual override {
-    require(operator != _msgSender(), "ERC721A: approve to caller");
-    if (msg.sender != owner()) {
-      require(isSellOpen, "Sell is not active currently.");
-    }
-
-    _operatorApprovals[_msgSender()][operator] = approved;
-    emit ApprovalForAll(_msgSender(), operator, approved);
   }
 
   function getReserveAtATime() external view returns (uint256) {
@@ -210,7 +208,7 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
     uint256 supply = totalSupply();
     uint256 i;
 
-    for (i = 0; i < reserveAtATime; i++) {
+    for (i = 1; i <= reserveAtATime; i++) {
       emit AssetMinted(supply + i, msg.sender);
       _safeMint(msg.sender, supply + i);
       reservedCount++;
@@ -218,13 +216,8 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
   }
 
   function reserveToCustomWallet(address _walletAddress, uint256 _count) public onlyAuthorized {
-    require(reservedCount <= maxReserveCount, "Max Reserves taken already!");
-
-    uint256 supply = totalSupply();
-    uint256 i;
-
-    for (i = 0; i < _count; i++) {
-      emit AssetMinted(supply + i, _walletAddress);
+    for (uint256 i = 0; i < _count; i++) {
+      emit AssetMinted(totalSupply(), _walletAddress);
       _safeMint(_walletAddress, totalSupply());
     }
   }
@@ -249,7 +242,6 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
       "can not mint this many"
     );
     require(!isClosedMintForever, "Mint Closed Forever");
-
     require(msg.value >= mintPrice * _count, "Insuffient ETH amount sent.");
 
     _safeMint(_to, _count);
@@ -257,26 +249,46 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
 
   function raffleMint(uint256 _count, bytes32[] memory _proof) public payable saleIsOpen {
     bytes32 leaf = keccak256(abi.encodePacked(msg.sender));
-
-    require(isRaffleActive, "Raffle is not active");
+    uint256 supply = totalSupply();
     require(_proof.verify(root, leaf), "invalid proof");
     require(totalSupply() < maximumMintSupply, "All tokens have been minted");
-    require(_count <= allowListMaxMint, "Cannot purchase this many tokens");
-    require(_allowListClaimed[msg.sender] + _count <= allowListMaxMint, "Purchase exceeds max allowed");
     require(msg.value >= raffleMintPrice * _count, "Insuffient ETH amount sent.");
     require(!isClosedMintForever, "Mint Closed Forever");
+    if(!isRaffleActive1 && !isRaffleActive2 && !isRaffleActive3) {
+      require(false, "Raffle is not active");
+    }
 
-    _safeMint(msg.sender, _count);
-  }
 
-  function preSaleMint(uint256 _count) public payable saleIsOpen {
-    require(isPreSaleMintActive, 'Pre Sale Mint is not active');
-    require(_allowList[msg.sender], 'You are not on the Allow List');
-    require(totalSupply() < maximumMintSupply, 'All tokens have been minted');
-    require(_count <= allowListMaxMint, 'Cannot purchase this many tokens');
-    require(_allowListClaimed[msg.sender] + _count <= allowListMaxMint, 'Purchase exceeds max allowed');
-    require(msg.value >= preSaleMintPrice * _count, 'Insuffient ETH amount sent.');
-    require(!isClosedMintForever, 'Mint Closed Forever');
+    if (isRaffleActive1) {
+      require(_count <= raffleMaxMint1, "Cannot purchase this many tokens for this stage");
+      require(_count + totalSupply() <= raffleBreakPoint1, "No NFTs are left to mint for this stage");
+      require(_allowListClaimed1[msg.sender] + _count <= raffleMaxMint1, 'Purchase exceeds max allowed');
+      _allowListClaimed1[msg.sender] += _count;
+    }
+
+    if (isRaffleActive2) {
+      require(_count <= raffleMaxMint2, "Cannot purchase this many tokens for this stage");
+      require(_count + totalSupply() <= raffleBreakPoint2, "No NFTs are left to mint for this stage");
+      require(_allowListClaimed2[msg.sender] + _count <= raffleMaxMint2, 'Purchase exceeds max allowed');
+      _allowListClaimed2[msg.sender] += _count;
+    }
+
+    if (isRaffleActive3) {
+      require(_count <= raffleMaxMint3, "Cannot purchase this many tokens for this stage");
+      require(_count + totalSupply() <= raffleBreakPoint3, "No NFTs are left to mint for this stage");
+      require(_allowListClaimed3[msg.sender] + _count <= raffleMaxMint3, 'Purchase exceeds max allowed');
+      _allowListClaimed3[msg.sender] += _count;
+    }
+
+    if(totalSupply() + _count == raffleBreakPoint1) {
+      isRaffleActive1 = false;
+      raffleMintPrice = 0.175 ether;
+    } else if(totalSupply() + _count == raffleBreakPoint2) {
+      isRaffleActive2 = false;
+      raffleMintPrice = 0.2 ether;
+    } else if(totalSupply() + _count == raffleBreakPoint3) {
+      isRaffleActive3 = false;
+    }
 
     _safeMint(msg.sender, _count);
   }
@@ -297,7 +309,8 @@ contract NFTStack721ARaffle is ERC721A, Ownable {
 
   function withdraw() external onlyAuthorized {
     uint balance = address(this).balance;
-    payable(OtherAddress).transfer(balance * 10000 / 10000);
+    payable(OtherAddress1).transfer(balance * 5000 / 10000);
+    payable(OtherAddress2).transfer(balance * 5000 / 10000);
     payable(owner()).transfer(balance * 0 / 10000);
   }
 }

@@ -22,11 +22,11 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
  * Does not support burning tokens to address(0).
  */
 contract ERC721A is
-Context,
-ERC165,
-IERC721,
-IERC721Metadata,
-IERC721Enumerable
+  Context,
+  ERC165,
+  IERC721,
+  IERC721Metadata,
+  IERC721Enumerable
 {
   using Address for address;
   using Strings for uint256;
@@ -63,7 +63,7 @@ IERC721Enumerable
   mapping(uint256 => address) private _tokenApprovals;
 
   // Mapping from owner to operator approvals
-  mapping(address => mapping(address => bool)) internal _operatorApprovals;
+  mapping(address => mapping(address => bool)) private _operatorApprovals;
 
   /**
    * @dev
@@ -108,10 +108,10 @@ IERC721Enumerable
    * It may also degrade with extremely large collection sizes (e.g >> 10000), test for your use case.
    */
   function tokenOfOwnerByIndex(address owner, uint256 index)
-  public
-  view
-  override
-  returns (uint256)
+    public
+    view
+    override
+    returns (uint256)
   {
     require(index < balanceOf(owner), "ERC721A: owner index out of bounds");
     uint256 numMintedSoFar = totalSupply();
@@ -136,17 +136,17 @@ IERC721Enumerable
    * @dev See {IERC165-supportsInterface}.
    */
   function supportsInterface(bytes4 interfaceId)
-  public
-  view
-  virtual
-  override(ERC165, IERC165)
-  returns (bool)
+    public
+    view
+    virtual
+    override(ERC165, IERC165)
+    returns (bool)
   {
     return
-    interfaceId == type(IERC721).interfaceId ||
-    interfaceId == type(IERC721Metadata).interfaceId ||
-    interfaceId == type(IERC721Enumerable).interfaceId ||
-    super.supportsInterface(interfaceId);
+      interfaceId == type(IERC721).interfaceId ||
+      interfaceId == type(IERC721Metadata).interfaceId ||
+      interfaceId == type(IERC721Enumerable).interfaceId ||
+      super.supportsInterface(interfaceId);
   }
 
   /**
@@ -166,9 +166,9 @@ IERC721Enumerable
   }
 
   function ownershipOf(uint256 tokenId)
-  internal
-  view
-  returns (TokenOwnership memory)
+    internal
+    view
+    returns (TokenOwnership memory)
   {
     require(_exists(tokenId), "ERC721A: owner query for nonexistent token");
 
@@ -212,11 +212,11 @@ IERC721Enumerable
    * @dev See {IERC721Metadata-tokenURI}.
    */
   function tokenURI(uint256 tokenId)
-  public
-  view
-  virtual
-  override
-  returns (string memory)
+    public
+    view
+    virtual
+    override
+    returns (string memory)
   {
     require(
       _exists(tokenId),
@@ -225,9 +225,9 @@ IERC721Enumerable
 
     string memory baseURI = _baseURI();
     return
-    bytes(baseURI).length > 0
-    ? string(abi.encodePacked(baseURI, tokenId.toString()))
-    : "";
+      bytes(baseURI).length > 0
+        ? string(abi.encodePacked(baseURI, tokenId.toString()))
+        : "";
   }
 
   /**
@@ -266,7 +266,7 @@ IERC721Enumerable
   /**
    * @dev See {IERC721-setApprovalForAll}.
    */
-  function setApprovalForAll(address operator, bool approved) public virtual override {
+  function setApprovalForAll(address operator, bool approved) public override {
     require(operator != _msgSender(), "ERC721A: approve to caller");
 
     _operatorApprovals[_msgSender()][operator] = approved;
@@ -277,11 +277,11 @@ IERC721Enumerable
    * @dev See {IERC721-isApprovedForAll}.
    */
   function isApprovedForAll(address owner, address operator)
-  public
-  view
-  virtual
-  override
-  returns (bool)
+    public
+    view
+    virtual
+    override
+    returns (bool)
   {
     return _operatorApprovals[owner][operator];
   }
@@ -403,8 +403,8 @@ IERC721Enumerable
     TokenOwnership memory prevOwnership = ownershipOf(tokenId);
 
     bool isApprovedOrOwner = (_msgSender() == prevOwnership.addr ||
-    getApproved(tokenId) == _msgSender() ||
-    isApprovedForAll(prevOwnership.addr, _msgSender()));
+      getApproved(tokenId) == _msgSender() ||
+      isApprovedForAll(prevOwnership.addr, _msgSender()));
 
     require(
       isApprovedOrOwner,
@@ -500,7 +500,7 @@ IERC721Enumerable
   ) private returns (bool) {
     if (to.isContract()) {
       try
-      IERC721Receiver(to).onERC721Received(_msgSender(), from, tokenId, _data)
+        IERC721Receiver(to).onERC721Received(_msgSender(), from, tokenId, _data)
       returns (bytes4 retval) {
         return retval == IERC721Receiver(to).onERC721Received.selector;
       } catch (bytes memory reason) {

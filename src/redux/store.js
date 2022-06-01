@@ -8,8 +8,8 @@ const rootReducer = combineReducers({
   data: dataReducer,
 })
 
-// const middleware = [thunk]
-const composeEnhancers = compose(applyMiddleware(thunk))
+const middleware = [thunk]
+const composeEnhancers = compose(applyMiddleware(...middleware))
 
 const configureStore = () => {
   return createStore(rootReducer, composeEnhancers)

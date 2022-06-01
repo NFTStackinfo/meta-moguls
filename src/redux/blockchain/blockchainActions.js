@@ -69,7 +69,7 @@ export const connect = (register = true) => {
         })
         //const NetworkData = await SmartContract.networks[networkId];
         if (networkId === "4" || networkId === 4) {
-          const address = "0x3d0AaD84b25c9Aa039eB680C2c9378b7d73dDCAA"
+          const address = "0xa3d17801c6279a613ed57a1a79a65a1b00dc9c20"
           const account = accounts[0]
 
           const SmartContractObj = new web3.eth.Contract(

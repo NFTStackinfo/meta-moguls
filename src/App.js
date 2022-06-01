@@ -461,7 +461,11 @@ const App = () => {
             <img src="logo-text.svg" alt="Meta Moguls" />
           </div>
 
-          <Countdown date={"2022-05-31T20:27:05"} renderer={renderer} />
+          <Countdown
+              // date={"2022-05-31T20:27:05"}
+              date={1654086655000}
+              renderer={renderer}
+          />
         </div>
       </div>
     </div>

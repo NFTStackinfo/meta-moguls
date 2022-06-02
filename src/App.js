@@ -26,7 +26,6 @@ const truncateText = text => {
 const App = () => {
   const dispatch = useDispatch()
   const blockchain = useSelector(state => state.blockchain)
-  const data = useSelector(state => state.data)
   const [mintPrice, setMintPrice] = useState(null)
   const [mintCount, setMintCount] = useState(1)
   const [maxMintCount, setMaxMintCount] = useState(null)
@@ -39,10 +38,6 @@ const App = () => {
   const [loading, setLoading] = useState(false)
 
   const minMintCount = 1
-
-  // uncomment if you need static maxMintCount
-  // const maxMintCount = 10
-  // const maxTotalSupply = 13
 
   // const maxTotalSupply = 650
   // const maxTotalSupply = 1000
@@ -57,10 +52,8 @@ const App = () => {
 
       dispatch(fetchData(blockchain.account))
       if (blockchain.account) {
-
         const isMintActive = await blockchain.smartContract.methods
-        .isMintActive()
-        .call()
+        .isMintActive().call()
         const isRaffleActive1 = await blockchain.smartContract.methods
         .isRaffleActive1().call()
         const isRaffleActive2 = await blockchain.smartContract.methods
@@ -108,10 +101,6 @@ const App = () => {
           .getTotalSupply()
           .call()
 
-
-        /**/
-        // setMaxMintCount(await blockchain?.smartContract?.methods.allowListMaxMint().call())
-
         setTotalSupply(Number(getTotalSupply))
 
         const root = await blockchain?.smartContract?.methods.getRoot().call()
@@ -133,8 +122,8 @@ const App = () => {
         const localRoot = getRoot()
         const account = await blockchain.account
 
-        console.log({localRoot});
-        console.log({root});
+        //uncomment this for seeing root in console
+        console.table([localRoot, root]);
         if (root === localRoot && addressList.includes(account)) {
           setNotSelected(false)
         } else {
@@ -142,16 +131,16 @@ const App = () => {
         }
 
 
-        console.log({isMintActive});
-        console.log({isRaffleActive1});
-        console.log({isRaffleActive2});
-        console.log({isRaffleActive3});
-        console.log({maxTotalSupply});
-        console.log({totalSupply});
-        console.log({maxMintCount});
+        // console.log({isMintActive});
+        // console.log({isRaffleActive1});
+        // console.log({isRaffleActive2});
+        // console.log({isRaffleActive3});
+        // console.log({maxTotalSupply});
+        // console.log({totalSupply});
+        // console.log({maxMintCount});
       }
     }
-  }, [blockchain.smartContract, totalSupply, dispatch])
+  }, [blockchain.smartContract, totalSupply, maxMintCount, blockchain.account, maxTotalSupply,  dispatch])
 
   useEffect(() => {
     setConnectingMobile(true)
@@ -262,7 +251,8 @@ const App = () => {
         })
         .then(receipt => {
           // setTotalSupply(blockchain?.smartContract?.methods.getTotalSupply().call())
-          setFallback("You have successfully minted your NFT/s.")
+        console.log('asd');
+          setFallback("Thanks! You have successfully minted.")
         })
     } else {
       setLoading(false)
@@ -276,9 +266,34 @@ const App = () => {
     claimNFTs(count)
   }
 
+  const reloadPageBeforeMint = (targetDate) => {
+    let target = new Date(targetDate);
+    let timeOffset = target.getTimezoneOffset() * 60000;
+    let targetTime = target.getTime();
+    let targetUTC = targetTime + timeOffset;
+
+    let today = new Date();
+    let todayTime = today.getTime();
+    let todayUTC = todayTime + timeOffset;
+
+    let refreshTime = (targetUTC - todayUTC);
+    if (refreshTime > 1) {
+      setTimeout(() => { window.location.reload(true);}, refreshTime);
+    }
+  }
+
+  reloadPageBeforeMint("June 2, 2022 17:03:00")
+
+  //set reload time
+  reloadPageBeforeMint("June 4, 2022 18:50:00")
+  reloadPageBeforeMint("June 7, 2022 18:50:00")
+  reloadPageBeforeMint("June 10, 2022 18:50:00")
+  reloadPageBeforeMint("June 18, 2022 18:50:00")
+
+  console.log(new Date());
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
-      // Render a completed state
+      /*Render a completed state*/
       return (
         <>
           {walletConnected && notSelected ? (
@@ -305,21 +320,21 @@ const App = () => {
                     className="glow-block button-big grid-item"
                     onClick={() => setMintCount(1)}
                   >
-                    <img src="assets/1.png" alt="1" />
+                    1
                   </button>
                   <button
                     disabled={2 + totalSupply >= maxTotalSupply}
                     className="glow-block button-big grid-item"
                     onClick={() => setMintCount(2)}
                   >
-                    <img src="assets/2.png" alt="2" />
+                    2
                   </button>
                   <button
                       disabled={(maxMintCount < 3) || (3 + totalSupply >= maxTotalSupply)}
                     className='glow-block button-big grid-item'
                     onClick={() => setMintCount(3)}
                   >
-                    <img src="assets/3.png" alt="3" />
+                    3
                   </button>
                 </div>
                 <div className="row glow-block">
@@ -371,6 +386,7 @@ const App = () => {
                 <p className="small-text">
                   wallet address - {truncateText(blockchain.account)}
                 </p>
+                {fallback && <p className="warn-text">{fallback}</p>}
               </div>
             </>
           ) : (
@@ -379,13 +395,13 @@ const App = () => {
               <div className="content content-sm">
                 <div className="grid pointer-none">
                   <div className="glow-block button-big grid-item">
-                    <img src="assets/1.png" alt="1" />
+                    1
                   </div>
                   <div className="glow-block button-big grid-item">
-                    <img src="assets/2.png" alt="2" />
+                    2
                   </div>
                   <div className="glow-block button-big grid-item">
-                    <img src="assets/3.png" alt="3" />
+                    3
                   </div>
                 </div>
                 <div className="row glow-block pointer-none">
@@ -484,8 +500,26 @@ const App = () => {
           </div>
 
           <Countdown
-              // date={"2022-05-31T20:27:05"}
-              date={1654103407000}
+              //uncomment this for seeing root in console
+              // date={"2015-05-31T20:27:05"}
+
+
+
+              //testtt
+              date={1654175100000}
+
+              //June 4, 2022 19:00:00
+              // date={1654354800000}
+
+              //June 7, 2022 19:00:00
+              // date={1654614000000}
+
+              //June 10, 2022 19:00:00
+              // date={1654873200000}
+
+              //June 18, 2022 19:00:00
+              // date={1655564400000}
+
               renderer={renderer}
           />
         </div>

@@ -1,5 +1,12 @@
 @import "reset";
 
+@font-face {
+    font-family: 'Azonix';
+    src: url('../assets/fonts/AzonixRegular.woff2') format('woff2'),
+    url('../assets/fonts/AzonixRegular.woff') format('woff'),
+    url('../assets/fonts/AzonixRegular.ttf') format('truetype');
+}
+
 body {
     font-family: 'Lato', sans-serif;
     font-size: 16px;
@@ -24,7 +31,7 @@ body {
     }
 
     .wrapper {
-        padding: 68px 0;
+        padding: 24px 0;
         text-align: center;
     }
 
@@ -139,6 +146,14 @@ body {
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            font-size: 64px;
+            font-family: 'Azonix', serif;
+            color: #ffffff;
+            transition: .3s;
+
+            &:hover {
+                background-color: rgba(172, 244, 254, 0.08);
+            }
 
 
             &[disabled] {
@@ -196,6 +211,10 @@ body {
 
     .pointer-none {
         pointer-events: none;
+    }
+
+    .warn-text {
+        font-size: 14px;
     }
 
 

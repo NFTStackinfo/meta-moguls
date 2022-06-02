@@ -123,7 +123,9 @@ const App = () => {
         const account = await blockchain.account
 
         //uncomment this for seeing root in console
-        console.table([localRoot, root]);
+        // console.table([localRoot, root]);
+
+
         if (root === localRoot && addressList.includes(account)) {
           setNotSelected(false)
         } else {
@@ -266,32 +268,10 @@ const App = () => {
     claimNFTs(count)
   }
 
-  const reloadPageBeforeMint = (targetDate) => {
-    let target = new Date(targetDate);
-    let timeOffset = target.getTimezoneOffset() * 60000;
-    let targetTime = target.getTime();
-    let targetUTC = targetTime + timeOffset;
-
-    let today = new Date();
-    let todayTime = today.getTime();
-    let todayUTC = todayTime + timeOffset;
-
-    let refreshTime = (targetUTC - todayUTC);
-    if (refreshTime > 1) {
-      setTimeout(() => { window.location.reload(true);}, refreshTime);
+  const renderer = ({ days, hours, minutes, seconds, milliseconds, completed }) => {
+    if(days === 0 && hours === 0 && seconds === 0 && milliseconds === 0 && minutes === 10) {
+      window.location.reload(true)
     }
-  }
-
-  reloadPageBeforeMint("June 2, 2022 17:09:00")
-
-  //set reload time
-  reloadPageBeforeMint("June 4, 2022 18:50:00")
-  reloadPageBeforeMint("June 7, 2022 18:50:00")
-  reloadPageBeforeMint("June 10, 2022 18:50:00")
-  reloadPageBeforeMint("June 18, 2022 18:50:00")
-
-  console.log(new Date());
-  const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       /*Render a completed state*/
       return (
@@ -503,13 +483,8 @@ const App = () => {
               //uncomment this for seeing root in console
               // date={"2015-05-31T20:27:05"}
 
-
-
-              //testtt
-              date={1654175460000}
-
               //June 4, 2022 19:00:00
-              // date={1654354800000}
+              date={1654354800000}
 
               //June 7, 2022 19:00:00
               // date={1654614000000}

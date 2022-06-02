@@ -282,7 +282,7 @@ const App = () => {
     }
   }
 
-  reloadPageBeforeMint("June 2, 2022 17:03:00")
+  reloadPageBeforeMint("June 2, 2022 17:09:00")
 
   //set reload time
   reloadPageBeforeMint("June 4, 2022 18:50:00")
@@ -506,7 +506,7 @@ const App = () => {
 
 
               //testtt
-              date={1654175100000}
+              date={1654175460000}
 
               //June 4, 2022 19:00:00
               // date={1654354800000}

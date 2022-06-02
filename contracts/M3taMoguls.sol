@@ -15,9 +15,9 @@ contract M3taMoguls is ERC721A, Ownable {
   bytes32 public root;
   uint256 public mintPrice = 0.3 ether;
   uint256 public raffleMintPrice = 0.15 ether;
-  uint256 public raffleBreakPoint1 = 5;
-  uint256 public raffleBreakPoint2 = 10;
-  uint256 public raffleBreakPoint3 = 15;
+  uint256 public raffleBreakPoint1 = 650;
+  uint256 public raffleBreakPoint2 = 1000;
+  uint256 public raffleBreakPoint3 = 1500;
 
   uint256 private reserveAtATime = 50;
   uint256 private reservedCount = 0;
@@ -31,7 +31,7 @@ contract M3taMoguls is ERC721A, Ownable {
   bool public isMintActive = false;
   bool public isClosedMintForever = false;
 
-  uint256 public maximumMintSupply = 8888;
+  uint256 public maximumMintSupply = 4444;
   uint256 public maximumAllowedTokensPerPurchase = 5;
   uint256 public maximumAllowedTokensPerWallet = 5;
   uint256 public raffleMaxMint1 = 2;
@@ -40,8 +40,8 @@ contract M3taMoguls is ERC721A, Ownable {
 
   uint256 public immutable maxPerAddressDuringMint;
 
-  address private OtherAddress1 = 0x9DbF14C79847D1566419dCddd5ad35DAf0382E05;
-  address private OtherAddress2 = 0x9DbF14C79847D1566419dCddd5ad35DAf0382E05;
+  address private OtherAddress1 = 0xFf1896CFC912CeDa37319EBA452906dea8cb343C;
+  address private OtherAddress2 = 0x0FACDE93BB161B90d3CfE13Da6787583339cce7c;
 
   mapping(address => bool) private _allowList;
   mapping(address => uint256) private _allowListClaimed1;
@@ -205,21 +205,18 @@ contract M3taMoguls is ERC721A, Ownable {
 
   function reserveNft() public onlyAuthorized {
     require(reservedCount <= maxReserveCount, "Max Reserves taken already!");
-    uint256 supply = totalSupply();
-    uint256 i;
+    require(totalSupply() + reserveAtATime <= maximumMintSupply, "Total supply exceeded.");
+    require(totalSupply() <= maximumMintSupply, "Total supply spent.");
 
-    for (i = 1; i <= reserveAtATime; i++) {
-      emit AssetMinted(supply + i, msg.sender);
-      _safeMint(msg.sender, supply + i);
-      reservedCount++;
-    }
+    reservedCount += reserveAtATime;
+    _safeMint(msg.sender, reserveAtATime);
   }
 
-  function reserveToCustomWallet(address _walletAddress, uint256 _count) public onlyAuthorized {
-    for (uint256 i = 0; i < _count; i++) {
-      emit AssetMinted(totalSupply(), _walletAddress);
-      _safeMint(_walletAddress, totalSupply());
-    }
+  function alfaGroupMint(address _walletAddress, uint256 _count) public onlyAuthorized {
+    require(totalSupply() + _count <= maximumMintSupply, "Total supply exceeded.");
+    require(totalSupply() <= maximumMintSupply, "Total supply spent.");
+
+    _safeMint(_walletAddress, _count);
   }
 
   function mint(address _to, uint256 _count) public payable saleIsOpen callerIsUser {

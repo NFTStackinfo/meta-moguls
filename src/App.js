@@ -137,9 +137,6 @@ const App = () => {
         // console.log({isRaffleActive1});
         // console.log({isRaffleActive2});
         // console.log({isRaffleActive3});
-        // console.log({maxTotalSupply});
-        // console.log({totalSupply});
-        // console.log({maxMintCount});
       }
     }
   }, [blockchain.smartContract, totalSupply, maxMintCount, blockchain.account, maxTotalSupply,  dispatch])
@@ -153,7 +150,7 @@ const App = () => {
     }
     if (blockchain.errorMsg === metamaskError && !(isIOS || isAndroid)) {
       window.location.replace(
-        "https://metamask.app.link/dapp/meta-moguls.netlify.app/"
+        "https://metamask.app.link/dapp/mint.m3tamoguls.com/"
       )
     }
   }, [blockchain.errorMsg])
@@ -165,7 +162,7 @@ const App = () => {
         blockchain.errorMsg === metamaskError
       ) {
         window.location.replace(
-          "https://metamask.app.link/dapp/meta-moguls.netlify.app/"
+          "https://metamask.app.link/dapp/mint.m3tamoguls.com/"
         )
       }
     }

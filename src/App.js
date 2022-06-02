@@ -373,7 +373,7 @@ const App = () => {
             <>
               {/*connect*/}
               <div className="content content-sm">
-                <div className="grid pointer-none">
+                <div className="grid pointer-none opacity">
                   <div className="glow-block button-big grid-item">
                     1
                   </div>
@@ -384,7 +384,7 @@ const App = () => {
                     3
                   </div>
                 </div>
-                <div className="row glow-block pointer-none">
+                <div className="row glow-block pointer-none opacity">
                   <div>custom</div>
                   <div className="counter">
                     <button>
@@ -396,7 +396,7 @@ const App = () => {
                     </button>
                   </div>
                 </div>
-                <div className="row glow-block pointer-none">
+                <div className="row glow-block pointer-none opacity">
                   <div>TOTAL</div>
                   <div>1 NFT = - ETH</div>
                 </div>
@@ -481,10 +481,10 @@ const App = () => {
 
           <Countdown
               //uncomment this for seeing root in console
-              // date={"2015-05-31T20:27:05"}
+              date={"2015-05-31T20:27:05"}
 
               //June 4, 2022 19:00:00
-              date={1654354800000}
+              // date={1654354800000}
 
               //June 7, 2022 19:00:00
               // date={1654614000000}

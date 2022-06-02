@@ -481,10 +481,10 @@ const App = () => {
 
           <Countdown
               //uncomment this for seeing root in console
-              date={"2015-05-31T20:27:05"}
+              // date={"2015-05-31T20:27:05"}
 
               //June 4, 2022 19:00:00
-              // date={1654354800000}
+              date={1654354800000}
 
               //June 7, 2022 19:00:00
               // date={1654614000000}

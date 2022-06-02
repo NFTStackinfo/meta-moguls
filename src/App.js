@@ -249,8 +249,6 @@ const App = () => {
           }
         })
         .then(receipt => {
-          // setTotalSupply(blockchain?.smartContract?.methods.getTotalSupply().call())
-        console.log('asd');
           setFallback("Thanks! You have successfully minted.")
         })
     } else {

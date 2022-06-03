@@ -465,7 +465,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="container">
+      <div className="main">
         <div className="wrapper">
           <div className="logo">
             <img src="logo.png" alt="Meta Moguls logo" />
@@ -494,6 +494,9 @@ const App = () => {
           />
         </div>
       </div>
+      <footer>
+        <p>Developed by <a href="https://nftstack.info" target='_blank' rel='noreferrer'>NFT Stack</a></p>
+      </footer>
     </div>
   )
 }

@@ -123,7 +123,7 @@ const App = () => {
         const account = await blockchain.account
 
         //uncomment this for seeing root in console
-        // console.table([localRoot, root]);
+        //console.table([localRoot, root]);
 
 
         if (root === localRoot && addressList.includes(account)) {
@@ -479,7 +479,7 @@ const App = () => {
               // date={"2015-05-31T20:27:05"}
 
               //June 4, 2022 19:00:00
-              date={1654354800000}
+              date={1654272614000}
 
               //June 7, 2022 19:00:00
               // date={1654614000000}

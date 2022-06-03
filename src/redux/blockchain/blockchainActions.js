@@ -68,8 +68,8 @@ export const connect = (register = true) => {
           method: "net_version",
         })
         //const NetworkData = await SmartContract.networks[networkId];
-        if (networkId === "1" || networkId === 1) {
-          const address = "0x7a98d0c96A35Bde4Bb643ba83c5E9A19FBaE2234"
+        if (networkId === "4" || networkId === 4) {
+          const address = "0x9a8fd324f52b123C831F06cebf59D9BF84Fd4eBd"
           const account = accounts[0]
 
           const SmartContractObj = new web3.eth.Contract(

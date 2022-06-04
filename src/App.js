@@ -67,7 +67,7 @@ const App = () => {
 
         if(isMintActive) {
           setMaxMintCount(await blockchain.smartContract.methods
-          .maximumAllowedTokensPerWallet.call())
+          .maximumAllowedTokensPerWallet().call())
           const maximumMintSupply = await blockchain?.smartContract?.methods.maximumMintSupply().call()
           setMaxTotalSupply(+maximumMintSupply)
         }
@@ -123,7 +123,7 @@ const App = () => {
         const account = await blockchain.account
 
         //uncomment this for seeing root in console
-        // console.table([localRoot, root]);
+        console.table([localRoot, root]);
 
 
         if (root === localRoot && addressList.includes(account)) {

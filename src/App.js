@@ -33,8 +33,9 @@ const App = () => {
   const [totalSupply, setTotalSupply] = useState(null)
   const [connectingMobile, setConnectingMobile] = useState(false)
   const [walletConnected, setWalletConnected] = useState(false)
+  const [publicMintActive, setPublicMintActive] = useState(false)
   const [fallback, setFallback] = useState("")
-  const [notSelected, setNotSelected] = useState(null)
+  const [notSelected, setNotSelected] = useState(true)
   const [loading, setLoading] = useState(false)
 
   const minMintCount = 1
@@ -66,8 +67,9 @@ const App = () => {
         setMintPrice(price)
 
         if(isMintActive) {
-          setMaxMintCount(await blockchain.smartContract.methods
-          .maximumAllowedTokensPerWallet().call())
+          setPublicMintActive(true)
+          const publicMintBreakpoint = await blockchain.smartContract.methods.maximumAllowedTokensPerWallet().call()
+          setMaxMintCount(+publicMintBreakpoint)
           const maximumMintSupply = await blockchain?.smartContract?.methods.maximumMintSupply().call()
           setMaxTotalSupply(+maximumMintSupply)
         }
@@ -93,6 +95,9 @@ const App = () => {
           setMaxTotalSupply(+raffleBreakPoint3)
         }
 
+        if(!isMintActive && !isRaffleActive1 && !isRaffleActive2 && !isRaffleActive3) {
+          return setFallback("The minting is closed")
+        }
         if (totalSupply > maxTotalSupply) {
           return setFallback("No more NFTs are left to mint for this stage.")
         }
@@ -126,17 +131,9 @@ const App = () => {
         console.table([localRoot, root]);
 
 
-        if (root === localRoot && addressList.includes(account)) {
+        if (root === localRoot && addressList.includes(account) || publicMintActive) {
           setNotSelected(false)
-        } else {
-          setNotSelected(true)
         }
-
-
-        // console.log({isMintActive});
-        // console.log({isRaffleActive1});
-        // console.log({isRaffleActive2});
-        // console.log({isRaffleActive3});
       }
     }
   }, [blockchain.smartContract, totalSupply, maxMintCount, blockchain.account, maxTotalSupply,  dispatch])
@@ -271,7 +268,7 @@ const App = () => {
       /*Render a completed state*/
       return (
         <>
-          {walletConnected && notSelected ? (
+          {walletConnected && notSelected && !publicMintActive ? (
             <>
               {/*connect failed*/}
               <div className="content">
@@ -286,9 +283,10 @@ const App = () => {
             <>
               {/*mint*/}
 
-              <p className="small-text main-text uppercase">
+              {!publicMintActive && <p className="small-text main-text uppercase">
                 Congrats! You have been selected for the Raffle.
-              </p>
+                </p>}
+
               <div className="content-sm">
                 <div className="grid">
                   <button
@@ -298,7 +296,7 @@ const App = () => {
                     1
                   </button>
                   <button
-                    disabled={2 + totalSupply >= maxTotalSupply}
+                    disabled={(maxMintCount < 2) ||2 + totalSupply >= maxTotalSupply}
                     className="glow-block button-big grid-item"
                     onClick={() => setMintCount(2)}
                   >

@@ -434,25 +434,29 @@ const App = () => {
             <>
               {/*register*/}
               <div className="content">
-                <h1 className="title">RAFFLE REGISTRATION</h1>
+                {/*<h1 className="title">RAFFLE REGISTRATION</h1>*/}
+                {/*<p className="text main-text">*/}
+                {/*  The registration is free and registering is only available*/}
+                {/*  with metamask wallet. <br /> Registration period ends in{" "}*/}
+                {/*  {days} days {hours} hours {minutes} minutes {seconds} seconds.*/}
+                {/*</p>*/}
+                {/*<div className="button-wrapper">*/}
+                {/*  <button*/}
+                {/*    className="button"*/}
+                {/*    onClick={e => {*/}
+                {/*      e.preventDefault()*/}
+                {/*      dispatch(connect(true))*/}
+                {/*      openMobileMetamask()*/}
+                {/*    }}*/}
+                {/*  >*/}
+                {/*    Register*/}
+                {/*  </button>*/}
+                {/*  {fallback && <p className="warn-text">{fallback}</p>}*/}
+                {/*</div>*/}
+                <h1 className="title">Mint</h1>
                 <p className="text main-text">
-                  The registration is free and registering is only available
-                  with metamask wallet. <br /> Registration period ends in{" "}
-                  {days} days {hours} hours {minutes} minutes {seconds} seconds.
+                  The mint will start in {days} days {hours} hours {minutes} minutes {seconds} seconds.
                 </p>
-                <div className="button-wrapper">
-                  <button
-                    className="button"
-                    onClick={e => {
-                      e.preventDefault()
-                      dispatch(connect(true))
-                      openMobileMetamask()
-                    }}
-                  >
-                    Register
-                  </button>
-                  {fallback && <p className="warn-text">{fallback}</p>}
-                </div>
               </div>
             </>
           )}
@@ -477,13 +481,16 @@ const App = () => {
               // date={"2015-05-31T20:27:05"}
 
               //June 4, 2022 19:00:00
-              date={1654354800000}
+              // date={1654354800000}
 
               //June 7, 2022 19:00:00
               // date={1654614000000}
 
               //June 10, 2022 19:00:00
               // date={1654873200000}
+
+              //June 11, 2022 03:00:00
+              date={1654902000000}
 
               //June 18, 2022 19:00:00
               // date={1655564400000}

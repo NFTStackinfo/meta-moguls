@@ -128,7 +128,7 @@ const App = () => {
         const account = await blockchain.account
 
         //uncomment this for seeing root in console
-        console.table([localRoot, root]);
+        // console.table([localRoot, root]);
 
 
         if (root === localRoot && addressList.includes(account) || publicMintActive) {

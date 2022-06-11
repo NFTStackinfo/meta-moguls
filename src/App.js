@@ -364,53 +364,6 @@ const App = () => {
             </>
           ) : (
             <>
-              {/*connect*/}
-              <div className="content content-sm">
-                <div className="grid pointer-none opacity">
-                  <div className="glow-block button-big grid-item">
-                    1
-                  </div>
-                  <div className="glow-block button-big grid-item">
-                    2
-                  </div>
-                  <div className="glow-block button-big grid-item">
-                    3
-                  </div>
-                </div>
-                <div className="row glow-block pointer-none opacity">
-                  <div>custom</div>
-                  <div className="counter">
-                    <button>
-                      <img src="assets/minus.svg" alt="" />
-                    </button>
-                    <span>{mintCount}</span>
-                    <button>
-                      <img src="assets/plus.svg" alt="" />
-                    </button>
-                  </div>
-                </div>
-                <div className="row glow-block pointer-none opacity">
-                  <div>TOTAL</div>
-                  <div>1 NFT = - ETH</div>
-                </div>
-                <div className="button-wrapper">
-                  <button
-                      className={`button ${blockchain.loading ? 'pointer-none' : ''}`}
-                      onClick={handleConnectWallet}
-                  >
-                    connect
-                    {blockchain.loading &&
-                        <div className="lds-ring">
-                          <div/>
-                          <div/>
-                          <div/>
-                          <div/>
-                        </div>
-                    }
-                  </button>
-                  {fallback && <p className="warn-text">{fallback}</p>}
-                </div>
-              </div>*/}
               <div className="content">
                 <h1 className="title">SOLD OUT</h1>
               </div>

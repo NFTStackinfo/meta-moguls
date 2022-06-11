@@ -410,6 +410,9 @@ const App = () => {
                   </button>
                   {fallback && <p className="warn-text">{fallback}</p>}
                 </div>
+              </div>*/}
+              <div className="content">
+                <h1 className="title">SOLD OUT</h1>
               </div>
             </>
           )}
